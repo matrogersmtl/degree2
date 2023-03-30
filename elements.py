@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from abc import ABCMeta, abstractmethod
 import operator
-from itertools import map
 
 import sage
 
