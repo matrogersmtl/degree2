@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from abc import ABCMeta, abstractmethod
 import operator
-from itertools import imap
+from itertools import map
 
 import sage
 
@@ -1164,4 +1164,4 @@ def modulo(x, p, K):
     a_s = [a ** i for i in range(d)]
     xl = x.list()
     xl_p = [mod(b, p).lift() for b in xl]
-    return sum(list(imap(operator.mul, a_s, xl_p)))
+    return sum(list(map(operator.mul, a_s, xl_p)))
