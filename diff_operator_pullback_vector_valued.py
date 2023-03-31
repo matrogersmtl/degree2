@@ -294,7 +294,7 @@ def fc_of_pullback_of_diff_eisen(l, k, m, A, D, u3, u4, verbose=False):
     res = res * QQ(mul(k + i for i in range(m))) ** (-1)
     res = res * _zeta(1 - l) * _zeta(1 - 2 * l + 2) * _zeta(1 - 2 * l + 4)
     if verbose:
-        print "Done computation of Fourier coefficient of pullback."
+        print("Done computation of Fourier coefficient of pullback.")
     return res
 
 
