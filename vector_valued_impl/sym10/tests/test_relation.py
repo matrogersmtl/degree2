@@ -1,17 +1,17 @@
 """Test relations among generators.
 """
 import unittest
-# TODO: Fix broken sym10_space input
-from degree2.vector_valued_impl.sym10.module_of_given_wt import relation, sym10_space
+# TODO: Fix broken sym10_space import
+#from degree2.vector_valued_impl.sym10.module_of_given_wt import relation, sym10_space
 import os
-from degree2.const import CalculatorVectValued
-from degree2.vector_valued_impl.sym10.even_structure import (
-    gen_consts as even_gen_consts,
-)
-from degree2.vector_valued_impl.sym10.odd_structure import gen_consts as odd_gen_consts
+#from degree2.const import CalculatorVectValued
+#from degree2.vector_valued_impl.sym10.even_structure import (
+#    gen_consts as even_gen_consts,
+#)
+#from degree2.vector_valued_impl.sym10.odd_structure import gen_consts as odd_gen_consts
 
-data_dir = os.path.expanduser("~/data/vector_valued_sym10/test/")
-calculator = CalculatorVectValued(even_gen_consts() + odd_gen_consts(), data_dir)
+#data_dir = os.path.expanduser("~/data/vector_valued_sym10/test/")
+#calculator = CalculatorVectValued(even_gen_consts() + odd_gen_consts(), data_dir)
 
 
 class TestRelation(unittest.TestCase):
