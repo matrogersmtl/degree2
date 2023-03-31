@@ -1,16 +1,15 @@
-'''
+"""
 This module provides functions gen_consts and ignored_dct.
 cf. Ibukiyama, Vector valued Siegel modular forms of symmetric tensor weight
 of small degrees.
-'''
+"""
 
 from degree2.const import ScalarModFormConst as SMFC
 from degree2.const import ConstVectValued
 
 
 def cvv(w1, w2, inc=0):
-    return ConstVectValued(4, [SMFC([w]) for w in [w1, w2]],
-                           inc=inc, tp=None)
+    return ConstVectValued(4, [SMFC([w]) for w in [w1, w2]], inc=inc, tp=None)
 
 
 def gen_consts():

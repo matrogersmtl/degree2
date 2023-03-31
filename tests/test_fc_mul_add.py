@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
-from degree2.scalar_valued_smfs import eisenstein_series_degree2, QexpLevel1,\
-    x10_with_prec, x12_with_prec, x35_with_prec, ModFormQexpLevel1
+from degree2.scalar_valued_smfs import (
+    eisenstein_series_degree2,
+    QexpLevel1,
+    x10_with_prec,
+    x12_with_prec,
+    x35_with_prec,
+    ModFormQexpLevel1,
+)
 from degree2.basic_operation import PrecisionDeg2
 import unittest
 from sage.all import FiniteField, ZZ, QQ, PolynomialRing
@@ -24,8 +30,7 @@ ff_es6 = es6.change_ring(ffld)
 ff_qsres6 = qsres6.change_ring(ffld)
 
 x10 = x10_with_prec(global_prec)
-qsrx10 = QexpLevel1(x10.fc_dct, global_prec, base_ring=ZZ,
-                    is_cuspidal=True)
+qsrx10 = QexpLevel1(x10.fc_dct, global_prec, base_ring=ZZ, is_cuspidal=True)
 
 ff_x10 = x10.change_ring(ffld)
 ff_qsrx10 = qsrx10.change_ring(ffld)
@@ -35,8 +40,7 @@ dzx10 = x10.differentiate_wrt_z()
 ff_dzx10 = dzx10.change_ring(ffld)
 
 x12 = x12_with_prec(global_prec)
-qsrx12 = QexpLevel1(x12.fc_dct, global_prec, is_cuspidal=True,
-                    base_ring=ZZ)
+qsrx12 = QexpLevel1(x12.fc_dct, global_prec, is_cuspidal=True, base_ring=ZZ)
 dzx12 = x12.differentiate_wrt_z()
 
 ff_x12 = x12.change_ring(ffld)
@@ -46,30 +50,32 @@ ff_dzx12 = dzx12.change_ring(ffld)
 x35 = x35_with_prec(global_prec)
 ff_x35 = x35.change_ring(ffld)
 
-dct_of_forms = {"es4": es4,
-                "qsres4": qsres4,
-                "es6": es6,
-                "qsres6": qsres6,
-                "x10": x10,
-                "qsrx10": qsrx10,
-                "x12": x12,
-                "qsrx12": qsrx12,
-                "dzx10": dzx10,
-                "dzx12": dzx12,
-                "x35": x35,
-                "2": 2,
-                "0": 0,
-                "F5_3": FiniteField(5)(3),
-                "ff_es4": ff_es4,
-                "ff_es6": ff_es6,
-                "ff_qsres4": ff_qsres4,
-                "ff_qsrx10": ff_qsrx10,
-                "ff_qsres6": ff_qsres6,
-                "ff_x10": ff_x10,
-                "ff_x12": ff_x12,
-                "ff_x35": ff_x35,
-                "ff_dzx10": ff_dzx10,
-                "ff_dzx12": ff_dzx12}
+dct_of_forms = {
+    "es4": es4,
+    "qsres4": qsres4,
+    "es6": es6,
+    "qsres6": qsres6,
+    "x10": x10,
+    "qsrx10": qsrx10,
+    "x12": x12,
+    "qsrx12": qsrx12,
+    "dzx10": dzx10,
+    "dzx12": dzx12,
+    "x35": x35,
+    "2": 2,
+    "0": 0,
+    "F5_3": FiniteField(5)(3),
+    "ff_es4": ff_es4,
+    "ff_es6": ff_es6,
+    "ff_qsres4": ff_qsres4,
+    "ff_qsrx10": ff_qsrx10,
+    "ff_qsres6": ff_qsres6,
+    "ff_x10": ff_x10,
+    "ff_x12": ff_x12,
+    "ff_x35": ff_x35,
+    "ff_dzx10": ff_dzx10,
+    "ff_dzx12": ff_dzx12,
+}
 
 
 class TestDeg2fcMulAddFunctions(unittest.TestCase):
@@ -87,8 +93,7 @@ class TestDeg2fcMulAddFunctions(unittest.TestCase):
         pf1 = dict_to_pol(f1, base_ring=base_ring)
         pf2 = dict_to_pol(f2, base_ring=base_ring)
         f = f1 * f2
-        self.assertTrue(f.fc_dct == pol_to_dict(pf1 * pf2,
-                                                base_ring=base_ring))
+        self.assertTrue(f.fc_dct == pol_to_dict(pf1 * pf2, base_ring=base_ring))
         return f
 
     def add_is_correct(self, f1_name, f2_name, base_ring=QQ):
@@ -97,13 +102,12 @@ class TestDeg2fcMulAddFunctions(unittest.TestCase):
         pf1 = dict_to_pol(f1, base_ring=base_ring)
         pf2 = dict_to_pol(f2, base_ring=base_ring)
         f = f1 + f2
-        self.assertTrue(f.fc_dct == pol_to_dict(pf1 + pf2,
-                                                base_ring=base_ring))
+        self.assertTrue(f.fc_dct == pol_to_dict(pf1 + pf2, base_ring=base_ring))
         return f
 
     def pow_is_correct(self, f1_name, n):
         f1 = dct_of_forms[f1_name]
-        f = f1 ** n
+        f = f1**n
         self.assertTrue(f == power(f1, n))
         return f
 
@@ -211,9 +215,9 @@ class TestDeg2fcMulAddFunctions(unittest.TestCase):
 
     # @skip("OK")
     def test_pow_hol(self):
-        '''
+        """
         Assumes multiplication is correct.
-        '''
+        """
         self.pow_is_correct("es4", 2)
         self.pow_is_correct("es4", 5)
         self.pow_is_correct("x35", 6)
@@ -266,9 +270,15 @@ def dict_to_pol(dct, bd=global_prec, base_ring=QQ):
     l = PrecisionDeg2(bd)
     if not hasattr(dct, "__getitem__"):
         return dct
-    return sum([dct[(n, r, m)] * uu1 ** r * qq1 ** n * qq2 ** m
-                if r > 0 else dct[(n, r, m)]
-                * uu2 ** (-r) * qq1 ** n * qq2 ** m for n, r, m in l])
+    return sum(
+        [
+            dct[(n, r, m)] * uu1**r * qq1**n * qq2**m
+            if r > 0
+            else dct[(n, r, m)] * uu2 ** (-r) * qq1**n * qq2**m
+            for n, r, m in l
+        ]
+    )
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestDeg2fcMulAddFunctions)
 unittest.TextTestRunner(verbosity=2).run(suite)

@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from degree2.scalar_valued_smfs import eisenstein_series_degree2, x10_with_prec, x12_with_prec,\
-    x35_with_prec
+from degree2.scalar_valued_smfs import (
+    eisenstein_series_degree2,
+    x10_with_prec,
+    x12_with_prec,
+    x35_with_prec,
+)
 from degree2.basic_operation import PrecisionDeg2
 from .data_dir import load_from_data_dir
 
@@ -20,7 +24,6 @@ global_prec = PrecisionDeg2([(34, -17, 51), (8, 35, 39), (12, 33, 27)])
 
 
 class TestDeg2Gens(unittest.TestCase):
-
     def sub_dct(self, form, prec=PrecisionDeg2(10)):
         return {k: form[k] for k in prec}
 
@@ -43,6 +46,7 @@ class TestDeg2Gens(unittest.TestCase):
     def test_x35(self):
         x35 = x35_with_prec(global_prec)
         self.assertTrue(self.sub_dct(x35) == fc_dct35)
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestDeg2Gens)
 unittest.TextTestRunner(verbosity=2).run(suite)

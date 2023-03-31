@@ -5,10 +5,13 @@ import operator
 from sage.all import NumberField, QQ, var, Integer, ZZ, PolynomialRing
 
 from degree2.scalar_valued_smfs import (
-    eisenstein_series_degree2, x10_with_prec,
-    x12_with_prec, x35_with_prec,
+    eisenstein_series_degree2,
+    x10_with_prec,
+    x12_with_prec,
+    x35_with_prec,
     KlingenEisensteinAndCuspForms,
-    CuspFormsDegree2)
+    CuspFormsDegree2,
+)
 
 
 from .data_dir import load_from_data_dir
@@ -20,8 +23,9 @@ def load_cache(fl):
 
 def _alpha20_3():
     x = var("x")
-    K = NumberField(x ** 2 - ZZ(1378464) * x + ZZ(328189501440), "alpha20_3")
+    K = NumberField(x**2 - ZZ(1378464) * x + ZZ(328189501440), "alpha20_3")
     return K.gens()[0]
+
 
 alpha20_1 = 119538120
 alpha20_2 = -840960
@@ -30,9 +34,9 @@ alpha20_3 = _alpha20_3()
 
 def _a47():
     x = var("x")
-    K = NumberField(
-        x ** 3 - x ** 2 - ZZ(524706) * x + ZZ(103406706), names="a47")
+    K = NumberField(x**3 - x**2 - ZZ(524706) * x + ZZ(103406706), names="a47")
     return K.gens()[0]
+
 
 a47 = _a47()
 
@@ -49,7 +53,8 @@ def polynomial_to_form(f, prec):
     gens = [es4, es6, x10, x12, x35]
 
     def monom(t):
-        return reduce(operator.mul, [f ** a for f, a in zip(gens, t)])
+        return reduce(operator.mul, [f**a for f, a in zip(gens, t)])
+
     return sum([a * monom(t) for t, a in f.dict().iteritems()])
 
 
@@ -64,24 +69,25 @@ cons47 = load_cache("cons47.sobj")
 def coerce_dict(d, fld):
     if fld == QQ or fld == ZZ:
         return d
-    return {k: fld(v.list()) if len(v.list()) > 1 else fld(v)
-            for k, v in d.items()}
+    return {k: fld(v.list()) if len(v.list()) > 1 else fld(v) for k, v in d.items()}
 
 
 def coerce_pol(pl, fld):
     if fld == QQ or fld == ZZ:
         return pl
-    return pl.map_coefficients(lambda x: fld(x.list()) if len(x.list()) > 1 else fld(x), fld)
+    return pl.map_coefficients(
+        lambda x: fld(x.list()) if len(x.list()) > 1 else fld(x), fld
+    )
 
 
 class TestEigenforms(unittest.TestCase):
-
     def test_wt_20_eigen(self):
         N20 = KlingenEisensteinAndCuspForms(20)
         pl = N20.hecke_charpoly(2)
         x = pl.parent().gens()[0]
-        pl1 = ((x + Integer(840960)) *
-               (x ** Integer(2) - Integer(1378464) * x + Integer(328189501440)))
+        pl1 = (x + Integer(840960)) * (
+            x ** Integer(2) - Integer(1378464) * x + Integer(328189501440)
+        )
         self.assertTrue(pl == (x - Integer(119538120)) * pl1)
 
         x = var("x")
@@ -96,19 +102,20 @@ class TestEigenforms(unittest.TestCase):
 
         cons20[-1] = coerce_pol(cons20[-1], alpha20_3.parent())
         self.assertTrue(cons20 == [f._construction for f in l])
-        self.assertTrue(all(polynomial_to_form(c, 4) == f
-                            for c, f in zip(cons20, l)))
+        self.assertTrue(all(polynomial_to_form(c, 4) == f for c, f in zip(cons20, l)))
 
         dcts = [f20_1_dct, f20_2_dct, f20_3_dct]
 
-        self.assertTrue(all(coerce_dict(d, f.base_ring) == f.fc_dct for d, f in zip(dcts, l)))
+        self.assertTrue(
+            all(coerce_dict(d, f.base_ring) == f.fc_dct for d, f in zip(dcts, l))
+        )
 
     def test_wt_20_cusp_eigen(self):
         S20 = CuspFormsDegree2(20)
         pl = S20.hecke_charpoly(2)
         x = pl.parent().gens()[0]
 
-        pl1 = (x ** Integer(2) - Integer(1378464) * x + Integer(328189501440))
+        pl1 = x ** Integer(2) - Integer(1378464) * x + Integer(328189501440)
         self.assertTrue(pl == (x + Integer(840960)) * pl1)
         self.assertTrue(pl == S20.hecke_matrix(2).charpoly("x"))
 
@@ -123,12 +130,17 @@ class TestEigenforms(unittest.TestCase):
 
         dcts = [f20_2_dct, f20_3_dct]
 
-        self.assertTrue(all(coerce_dict(d, f.base_ring) == f.fc_dct for d, f in zip(dcts, l)))
+        self.assertTrue(
+            all(coerce_dict(d, f.base_ring) == f.fc_dct for d, f in zip(dcts, l))
+        )
 
     def test_wt_47_eigen(self):
         KS47 = KlingenEisensteinAndCuspForms(47)
-        lambda2 = (-ZZ(957874176) / ZZ(13) * a47 ** 2 - ZZ(818321817600) / ZZ(13) * a47 -
-                   ZZ(34324755775488))
+        lambda2 = (
+            -ZZ(957874176) / ZZ(13) * a47**2
+            - ZZ(818321817600) / ZZ(13) * a47
+            - ZZ(34324755775488)
+        )
         x47 = KS47.eigenform_with_eigenvalue_t2(lambda2)
         x47 = x47.normalize(x47[(2, -1, 3)])
         _const47 = coerce_pol(cons47[0], a47.parent())
@@ -147,15 +159,17 @@ class TestEigenforms(unittest.TestCase):
 
     def test_wt_35_eigenvalues(self):
         x35 = x35_with_prec([(12, 33, 27), (8, 35, 39), (34, -17, 51)])
-        d = {2: -25073418240,
-             3: -11824551571578840,
-             4: 138590166352717152256,
-             5: 9470081642319930937500,
-             7: -10370198954152041951342796400,
-             9: -96268467952179923650803475996239,
-             11: -8015071689632034858364818146947656,
-             13: -20232136256107650938383898249808243380,
-             17: 118646313906984767985086867381297558266980}
+        d = {
+            2: -25073418240,
+            3: -11824551571578840,
+            4: 138590166352717152256,
+            5: 9470081642319930937500,
+            7: -10370198954152041951342796400,
+            9: -96268467952179923650803475996239,
+            11: -8015071689632034858364818146947656,
+            13: -20232136256107650938383898249808243380,
+            17: 118646313906984767985086867381297558266980,
+        }
         d1 = {m: x35.hecke_eigenvalue(m) for m in d.keys()}
         self.assertTrue(d == d1)
 
@@ -168,13 +182,16 @@ class TestEigenforms(unittest.TestCase):
     def test_cusp_sp_wt28_hecke_charpoly(self):
         R = PolynomialRing(QQ, names="x")
         x = R.gens()[0]
-        pl = (x ** Integer(7) - Integer(599148384) * x ** Integer(6) +
-              Integer(85597740037545984) * x ** Integer(5) +
-              Integer(4052196666582552432082944) * x ** Integer(4) -
-              Integer(992490558368877866775830593536000) * x ** Integer(3) -
-              Integer(7786461340613962559507216233894458163200) * x ** Integer(2) +
-              Integer(2554655965904300151500968857660777576875950080000) * x +
-              Integer(2246305351725266922462270484154998253269432286576640000))
+        pl = (
+            x ** Integer(7)
+            - Integer(599148384) * x ** Integer(6)
+            + Integer(85597740037545984) * x ** Integer(5)
+            + Integer(4052196666582552432082944) * x ** Integer(4)
+            - Integer(992490558368877866775830593536000) * x ** Integer(3)
+            - Integer(7786461340613962559507216233894458163200) * x ** Integer(2)
+            + Integer(2554655965904300151500968857660777576875950080000) * x
+            + Integer(2246305351725266922462270484154998253269432286576640000)
+        )
         S = CuspFormsDegree2(28)
         self.assertTrue(R(S.hecke_charpoly(2)) == pl)
 

@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 import unittest
-from degree2.scalar_valued_smfs import eisenstein_series_degree2, x12_with_prec, x35_with_prec,\
-    ModFormQexpLevel1, QexpLevel1
+from degree2.scalar_valued_smfs import (
+    eisenstein_series_degree2,
+    x12_with_prec,
+    x35_with_prec,
+    ModFormQexpLevel1,
+    QexpLevel1,
+)
 import tempfile
 from sage.all import FiniteField, ZZ
+
 global_prec = 8
 
 es4 = eisenstein_series_degree2(4, global_prec)
@@ -18,7 +24,6 @@ ff_x35 = x35.change_ring(FiniteField(23))
 
 
 class TestLoadSave(unittest.TestCase):
-
     def load_save_scalar_valued_mf(self, orig_f, loaded_f, hol=False):
         if not hol:
             self.assertTrue(orig_f.fc_dct == loaded_f.fc_dct)
@@ -61,6 +66,7 @@ class TestLoadSave(unittest.TestCase):
             f = ff_x35
             lf = self.loaded_form(f, temp.name)
             self.load_save_scalar_valued_mf(f, lf, hol=True)
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestLoadSave)
 unittest.TextTestRunner(verbosity=2).run(suite)

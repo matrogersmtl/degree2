@@ -13,40 +13,42 @@ from sage.all import CC, RR, factorial, Integer, vector, ceil
 
 
 def _partition(num_ls, n):
-    '''
+    """
     num_ls is a list of non-negative real numbers.
     Returns a list of indices.
-    '''
+    """
     m = len(num_ls)
-    wts = [sum(num_ls[:i + 1]) for i in range(m)]
+    wts = [sum(num_ls[: i + 1]) for i in range(m)]
     av_wt = RR(wts[-1]) / RR(n)
 
     def fn(i):
         return max(ceil(RR(wts[i]) / RR(av_wt)), 1)
+
     return [list(v) for _, v in groupby(range(m), fn)]
 
 
 def partition_weighted(l, n, weight_fn=None):
-    '''
+    """
     weight_fn is a function defined on an element of l.
     Divides l into n lists so that the sum of weight_fn of each list
     is almost same.
-    '''
+    """
 
     if n == 1:
         return [l]
 
-    idx_list = _partition([weight_fn(x) for x in l]
-                          if weight_fn is not None else [1 for _ in l], n)
-    
+    idx_list = _partition(
+        [weight_fn(x) for x in l] if weight_fn is not None else [1 for _ in l], n
+    )
+
     return [[l[i] for i in idl] for idl in idx_list]
 
 
 def pmap(fn, l, weight_fn=None, num_of_procs=None):
-    '''
+    """
     Parallel map. The meaning of weight_fn is same as the meaning
     of the argument of partition_weighted.
-    '''
+    """
     if num_of_procs == 1:
         return [fn(a) for a in l]
 
@@ -56,8 +58,10 @@ def pmap(fn, l, weight_fn=None, num_of_procs=None):
         num = cpu_count()
     ls = partition_weighted(l, num, weight_fn=weight_fn)
     pipes = [Pipe() for _ in ls]
-    procs = [Process(target=_spawn(lambda x: [fn(a) for a in x]), args=(c, x))
-             for x, (_, c) in zip(ls, pipes)]
+    procs = [
+        Process(target=_spawn(lambda x: [fn(a) for a in x]), args=(c, x))
+        for x, (_, c) in zip(ls, pipes)
+    ]
     for p in procs:
         p.start()
     try:
@@ -89,17 +93,18 @@ def _spawn(f):
             pipe.send(e)
         finally:
             pipe.close()
+
     return fun
 
 
 def group(ls, n):
-    '''
+    """
     Partition of ls into n lists.
-    '''
+    """
     m = len(ls) // n
     if len(ls) % n == 0:
-        return [ls[i * n:i * n + n] for i in range(m)]
-    return [ls[i * n:i * n + n] for i in range(m)] + [ls[n * m:]]
+        return [ls[i * n : i * n + n] for i in range(m)]
+    return [ls[i * n : i * n + n] for i in range(m)] + [ls[n * m :]]
 
 
 def mul(ls):
@@ -121,9 +126,9 @@ def combination(n, m):
 
 @cached_function
 def naive_det_func(n):
-    '''
+    """
     Returns a function that computes the determinant of n by n matrix.
-    '''
+    """
 
     def removed_list_at(i, l):
         return [l[j] for j in range(len(l)) if i != j]
@@ -134,10 +139,13 @@ def naive_det_func(n):
         else:
             _det_func = naive_det_func(n - 1)
             ls1 = [l[:-1] for l in ls]
-            return (-1) ** (n + 1) * \
-                sum([(-1) ** i *
-                     _det_func(removed_list_at(i, ls1)) * ls[i][-1]
-                     for i in range(n)])
+            return (-1) ** (n + 1) * sum(
+                [
+                    (-1) ** i * _det_func(removed_list_at(i, ls1)) * ls[i][-1]
+                    for i in range(n)
+                ]
+            )
+
     return _det
 
 
@@ -148,9 +156,11 @@ def naive_det(m):
     else:
         res = 0
         for i, a in zip(range(n), m[0]):
-            res += (-1) ** i * a * naive_det(
-                [[b for j, b in zip(range(n), l) if i != j]
-                 for l in m[1:]])
+            res += (
+                (-1) ** i
+                * a
+                * naive_det([[b for j, b in zip(range(n), l) if i != j] for l in m[1:]])
+            )
         return res
 
 
@@ -172,8 +182,7 @@ def det(m):
         if a == b:
             return l
         d = {a: l[b], b: l[a]}
-        return [x if i != a and i != b else d[i]
-                for x, i in zip(l, range(len(l)))]
+        return [x if i != a and i != b else d[i] for x, i in zip(l, range(len(l)))]
 
     sgn = 1
 
@@ -192,21 +201,21 @@ def det(m):
 
 
 def linearly_indep_rows_index_list(A, r):
-    '''
+    """
     Assume rank A = r and the number of columns is r.
     This function returns the list of indices lst such that
     [A.rows()[i] for i in lst] has length r and linearly independent.
-    '''
+    """
     return find_linearly_indep_indices(A, r)
 
 
 def find_linearly_indep_indices(vectors, r):
-    '''
+    """
     Let vectors be a list of vectors or a list of list.
     Assume r be the rank of vectors.
     This function returns a list of indices I of length r
     such that the rank of [vectors[i] for i in I] is equal to r.
-    '''
+    """
     acc = []
     if isinstance(vectors[0], list):
         vectors = [vector(a) for a in vectors]
@@ -234,20 +243,25 @@ def find_linearly_indep_indices(vectors, r):
 def polynomial_func(pl):
     l = pl.coefficients()
     m = len(l)
-    return lambda y: sum([y ** i * l[i] for i in range(m)])
+    return lambda y: sum([y**i * l[i] for i in range(m)])
 
 
 def is_number(a):
-    if isinstance(a, (int, float, complex,
-                      sage.rings.all.CommutativeRingElement)):
+    if isinstance(a, (int, float, complex, sage.rings.all.CommutativeRingElement)):
         return True
-    elif hasattr(a, 'parent'):
+    elif hasattr(a, "parent"):
         numgen = sage.rings.number_field.number_field.NumberField_generic
         parent = a.parent()
-        return CC.has_coerce_map_from(parent) or \
-            isinstance(parent, numgen) or \
-            (hasattr(parent, "is_field") and hasattr(parent, "is_finite") and
-             parent.is_field() and parent.is_finite())
+        return (
+            CC.has_coerce_map_from(parent)
+            or isinstance(parent, numgen)
+            or (
+                hasattr(parent, "is_field")
+                and hasattr(parent, "is_finite")
+                and parent.is_field()
+                and parent.is_finite()
+            )
+        )
     else:
         return False
 
@@ -257,8 +271,11 @@ def is_integer(a):
 
 
 def _is_triple_of_integers(tpl):
-    return isinstance(tpl, tuple) and len(tpl) == 3 and \
-        all([is_integer(a) for a in list(tpl)])
+    return (
+        isinstance(tpl, tuple)
+        and len(tpl) == 3
+        and all([is_integer(a) for a in list(tpl)])
+    )
 
 
 class CommRingLikeElment(object):

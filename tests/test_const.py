@@ -1,9 +1,15 @@
-'''A module for testing degree2.const.
-'''
+"""A module for testing degree2.const.
+"""
 
 import unittest
-from degree2.const import (ConstMul, ConstDivision, ConstVectValued,
-                           dependencies, needed_precs, ConstVectValuedHeckeOp)
+from degree2.const import (
+    ConstMul,
+    ConstDivision,
+    ConstVectValued,
+    dependencies,
+    needed_precs,
+    ConstVectValuedHeckeOp,
+)
 from degree2.all import degree2_modular_forms_ring_level1_gens
 from degree2.scalar_valued_smfs import x10_with_prec
 from degree2.const import ScalarModFormConst as SMFC
@@ -11,11 +17,9 @@ from unittest import skip
 
 
 class ConstsTest(unittest.TestCase):
-
     @skip("OK")
     def test_scalar_calc_form(self):
-        '''Test SMFC.calc_form.
-        '''
+        """Test SMFC.calc_form."""
         prec = 5
         es4, es6, x10, x12, _ = degree2_modular_forms_ring_level1_gens(prec)
         c = SMFC([4, 6])
@@ -23,13 +27,13 @@ class ConstsTest(unittest.TestCase):
         c = SMFC({(4, 6): 1})
         self.assertTrue(c.calc_form(prec), es4 * es6)
         c = SMFC([4, 4, 10, 12])
-        self.assertTrue(c.calc_form(prec), es4 ** 2 * x10 * x12)
+        self.assertTrue(c.calc_form(prec), es4**2 * x10 * x12)
         c = SMFC({(4, 4, 6): 1, (4, 10): -1})
-        self.assertTrue(c.calc_form(prec), es4 ** 2 * es6 - es4 * x10)
+        self.assertTrue(c.calc_form(prec), es4**2 * es6 - es4 * x10)
 
     @skip("OK")
     def test_division_multiplication(self):
-        '''Test the method calc_form of ConstDivision and ConstMul.'''
+        """Test the method calc_form of ConstDivision and ConstMul."""
         prec = 5
         es4, es6, _, _, _ = degree2_modular_forms_ring_level1_gens(prec)
         sccs = [SMFC([4, 6]), SMFC([10, 12])]
@@ -47,9 +51,9 @@ class ConstsTest(unittest.TestCase):
 
     @skip("OK")
     def test_division_cusp(self):
-        '''Test the method calc_form of ConstDivision in the case when
+        """Test the method calc_form of ConstDivision in the case when
         division by a cusp form.
-        '''
+        """
         prec = 5
         x10 = x10_with_prec(prec)
         sccs = [SMFC([4, 10]), SMFC([6, 10])]
@@ -62,8 +66,7 @@ class ConstsTest(unittest.TestCase):
         self.assertEqual(G * x10, F)
 
     def test_dependencies(self):
-        '''Test the function dependencies.
-        '''
+        """Test the function dependencies."""
         j = 10
         c1 = ConstVectValued(j, [SMFC([4, 6])], 0, None)
         c2 = ConstDivision([c1], [1], SMFC([4]), 0)
@@ -73,8 +76,7 @@ class ConstsTest(unittest.TestCase):
         self.assertTrue(dependencies(c5), set([c1, c2, c3, c4]))
 
     def test_needed_precs(self):
-        '''Test the funciton needed_precs.
-        '''
+        """Test the funciton needed_precs."""
         j = 10
         c1 = ConstVectValued(j, [SMFC([5, 5])], 0, None)
         c2 = ConstDivision([c1], [1], SMFC([10]), 1)
@@ -90,8 +92,7 @@ class ConstsTest(unittest.TestCase):
         self.assertEqual(precs[c1], 14)
 
     def test_walk(self):
-        '''Test the method walk of ConstVectBase.
-        '''
+        """Test the method walk of ConstVectBase."""
         j = 10
         c1 = ConstVectValued(j, [SMFC([5, 5])], 0, None)
         c2 = ConstDivision([c1], [1], SMFC([10]), 1)
@@ -103,6 +104,7 @@ class ConstsTest(unittest.TestCase):
         self.assertEqual(list(c3.walk()), [c1, c2, c3])
         self.assertEqual(list(c4.walk()), [c1, c4])
         self.assertEqual(list(c5.walk()), [c1, c2, c3, c1, c4, c5])
+
 
 suite = unittest.TestLoader().loadTestsFromTestCase(ConstsTest)
 unittest.TextTestRunner(verbosity=2).run(suite)
