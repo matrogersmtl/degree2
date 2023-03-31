@@ -1,5 +1,5 @@
-from sage.all import (ComplexField, NumberField, PolynomialRing, CuspForms, QQ,
-                      CartesianProduct, fork)
+from sage.all import ComplexField, NumberField, PolynomialRing, CuspForms, QQ, fork
+from sage.sets.cartesian_product import CartesianProduct
 import unittest
 from degree2.vector_valued_smfs import vector_valued_siegel_modular_forms as vvsmf
 from degree2.basic_operation import number_of_procs
