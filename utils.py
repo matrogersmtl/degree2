@@ -32,14 +32,13 @@ def partition_weighted(l, n, weight_fn=None):
     Divides l into n lists so that the sum of weight_fn of each list
     is almost same.
     '''
-    import pdb; pdb.set_trace()
 
     if n == 1:
         return [l]
 
     idx_list = _partition([weight_fn(x) for x in l]
                           if weight_fn is not None else [1 for _ in l], n)
-    import pdb; pdb.set_trace()
+    
     return [[l[i] for i in idl] for idl in idx_list]
 
 
