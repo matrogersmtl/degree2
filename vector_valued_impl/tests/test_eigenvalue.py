@@ -1,4 +1,4 @@
-from sage.all import ComplexField, NumberField, PolynomialRing, CuspForms, QQ, fork
+from sage.all import ComplexField, NumberField, PolynomialRing, CuspForms, QQ, fork, cartesian_product_iterator
 from sage.sets.cartesian_product import CartesianProduct
 import unittest
 from degree2.vector_valued_smfs import vector_valued_siegel_modular_forms as vvsmf
@@ -84,7 +84,7 @@ class RamanujanConjandKlingen(unittest.TestCase):
                     self.assert_hecke_eigen_values(f)
 
         with number_of_procs(1):
-            for k, j in CartesianProduct(range(4, 30), [2, 4, 10]):
+            for k, j in list(cartesian_product_iterator([range(4, 30), [2, 4, 10]])):
                 _check(k, j)
 
 
