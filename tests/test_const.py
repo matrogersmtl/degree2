@@ -14,6 +14,7 @@ from degree2.all import degree2_modular_forms_ring_level1_gens
 from degree2.scalar_valued_smfs import x10_with_prec
 from degree2.const import ScalarModFormConst as SMFC
 from unittest import skip
+from functools import reduce
 
 
 class ConstsTest(unittest.TestCase):

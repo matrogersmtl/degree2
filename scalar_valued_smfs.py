@@ -2,6 +2,8 @@
 import os
 import operator
 from abc import ABCMeta, abstractproperty
+from functools import reduce
+
 import sage
 from sage.misc.cachefunc import cached_method, cached_function
 from sage.all import (

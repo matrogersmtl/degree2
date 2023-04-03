@@ -4,6 +4,7 @@ A module for construction of vector valued Siegel modular forms.
 """
 
 from __future__ import print_function
+from functools import reduce
 
 from abc import ABCMeta, abstractmethod, abstractproperty
 import os

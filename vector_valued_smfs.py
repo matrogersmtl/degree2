@@ -8,6 +8,7 @@ of small degrees.
 """
 
 import operator
+from functools import reduce
 
 from sage.misc.cachefunc import cached_method
 

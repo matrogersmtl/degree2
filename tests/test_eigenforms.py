@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 import operator
+from functools import reduce
 
 from sage.all import NumberField, QQ, var, Integer, ZZ, PolynomialRing
 

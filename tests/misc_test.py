@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from unittest import skip
+from functools import reduce
 
 from degree2.basic_operation import (
     PrecisionDeg2,
@@ -19,6 +20,7 @@ from degree2.scalar_valued_smfs import (
 )
 
 from degree2.rankin_cohen_diff import rankin_cohen_pair_sym
+from functools import reduce
 
 from sage.all import matrix, mod, QQ
 from degree2.hecke_module import HalfIntegralMatrices2
