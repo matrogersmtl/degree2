@@ -152,7 +152,7 @@ def load_cached_gens_from_file(prec):
     prec34_m17_51 = PrecisionDeg2([(34, -17, 51)])
 
     if Deg2global_gens_dict != {}:
-        a_ky = Deg2global_gens_dict.keys()[0]
+        a_ky = list(Deg2global_gens_dict.keys())[0]
         if Deg2global_gens_dict[a_ky].prec >= prec:
             return None
 
