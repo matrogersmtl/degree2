@@ -5,6 +5,7 @@ import traceback
 from multiprocessing import Process, Pipe, cpu_count
 import operator
 from itertools import groupby
+from functools import reduce
 from abc import ABCMeta, abstractmethod
 
 import sage
