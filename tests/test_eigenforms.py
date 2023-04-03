@@ -62,8 +62,8 @@ x47_fc_dct = load_cache("x47_fc_dct.sobj")
 f20_1_dct = load_cache("f20_1_dct.sobj")
 f20_2_dct = load_cache("f20_2_dct.sobj")
 f20_3_dct = load_cache("f20_3_dct.sobj")
-cons20 = load_cache("cons20.sobj")
-cons47 = load_cache("cons47.sobj")
+#cons20 = load_cache("cons20.sobj")
+#cons47 = load_cache("cons47.sobj")
 
 
 def coerce_dict(d, fld):
