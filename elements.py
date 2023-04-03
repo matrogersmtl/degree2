@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from abc import ABCMeta, abstractmethod
 import operator
+from functools import reduce
 
 import sage
 
@@ -113,8 +114,8 @@ class FormalQexp(CommRingLikeElment):
     def __getitem__(self, idx):
         return self.fc_dct[idx]
 
-    def iteritems(self):
-        return iter(self.fc_dct.items())
+    # def iteritems(self):
+    #     return iter(self.fc_dct.items())
 
     def sorted_list(self):
         return to_sorted_fc_list(self.fc_dct)
@@ -654,7 +655,7 @@ class ModFormQexpLevel1(QexpLevel1, HeckeModuleElement):
 
     def __eq__(self, other):
         if other == 0:
-            return all([x == 0 for x in self.fc_dct.itervalues()])
+            return all([x == 0 for x in iter(self.fc_dct.values())])
         else:
             return self - other == 0
 

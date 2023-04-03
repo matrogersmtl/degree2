@@ -11,6 +11,7 @@ from degree2.basic_operation import PrecisionDeg2
 import unittest
 from sage.all import FiniteField, ZZ, QQ, PolynomialRing
 import operator
+from functools import reduce
 
 global_prec = 8
 # global_prec = [(10, 5, 10), (9, 0, 8)]

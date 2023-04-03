@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import multiprocessing
+from functools import reduce
 
 from sage.all import Integer, ZZ, gcd, QQ, mod, floor, sqrt
 
@@ -355,7 +356,8 @@ def _key_of_tuples(prec, cuspidal=False, hol=False):
 def _partition_add_fourier(
     prec, cuspidal=False, hol=False, num_of_procs=current_num_of_procs.num_of_procs
 ):
-    lst = _key_of_tuples(prec, cuspidal, hol)
+    lst = list(_key_of_tuples(prec, cuspidal, hol))
+
     return partition_weighted(lst, num_of_procs)
 
 
@@ -363,7 +365,7 @@ def _partition_add_fourier(
 def _partition_mul_fourier(
     prec, cuspidal=False, hol=False, num_of_procs=current_num_of_procs.num_of_procs
 ):
-    tpls = _key_of_tuples(prec, cuspidal, hol)
+    tpls = list(_key_of_tuples(prec, cuspidal, hol))
 
     def weight_fn(x):
         n, r, m = x
