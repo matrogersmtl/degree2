@@ -32,7 +32,7 @@ def derivative_pol(f, pl):
     return sum(
         [
             mul(v, derivative_exp(derivative_exp(f, a, t), b, s))
-            for (a, b), v in pl.dict().iteritems()
+            for (a, b), v in iter(pl.dict().items())
         ]
     )
 
@@ -58,8 +58,8 @@ def root_of_unities():
         "omega": x**4 + x**3 + x**2 + x + 1,
         "sigma": x**4 - x**2 + 1,
     }
-    dctnm = {k: NumberField(v, names=k) for k, v in dct.iteritems()}
-    return {k: v.gens()[0] for k, v in dctnm.iteritems()}
+    dctnm = {k: NumberField(v, names=k) for k, v in iter(dct.items())}
+    return {k: v.gens()[0] for k, v in iter(dctnm.items())}
 
 
 two = QQ(2)
@@ -204,7 +204,7 @@ def gen_func_maybe_cusp_num_t(parity=None):
     else:
         e = parity % 2
         nm = sum(
-            [t**a * s**b * v for (a, b), v in nm.dict().iteritems() if a % 2 == e]
+            [t**a * s**b * v for (a, b), v in iter(nm.dict().items()) if a % 2 == e]
         )
         return nm / dnm2
 

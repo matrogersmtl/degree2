@@ -142,7 +142,7 @@ def _z_u_ring_zgens():
 
 def _from_z_dz_ring_to_diff_op(pol):
     pol = _Z_dZ_ring(pol)
-    d = {tuple(t): _Z_ring(v) for t, v in pol.dict().iteritems()}
+    d = {tuple(t): _Z_ring(v) for t, v in iter(pol.dict().items())}
     return DiffZOperatorElement(d)
 
 
@@ -310,7 +310,7 @@ def fc_of_pullback_of_diff_eisen(l, k, m, A, D, u3, u4, verbose=False):
         pol = D_tilde_nu(l, k - l, QQ(1), r_ls, **dct)
         # L_operator is a differential operator whose order <= m,
         # we truncate it.
-        pol = _Z_ring({t: v for t, v in pol.dict().iteritems() if sum(list(t)) <= m})
+        pol = _Z_ring({t: v for t, v in iter(pol.dict().items()) if sum(list(t)) <= m})
         _l_op_tmp = L_operator(
             k, m, A, D, r_ls, pol * es.fourier_coefficient(mat), us, d_up_down_mlt
         )
@@ -349,7 +349,7 @@ def _pullback_vector(l, D, u3, u4, space_of_cuspforms, verbose=False):
             for t in tpls
         }
         pull_back_dct = {
-            k: v.constant_coefficient() for k, v in pull_back_dct.iteritems()
+            k: v.constant_coefficient() for k, v in iter(pull_back_dct.items())
         }
     return space_of_cuspforms._to_vector(pull_back_dct)
 

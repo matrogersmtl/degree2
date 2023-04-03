@@ -24,7 +24,7 @@ from degree2.hecke_module import HeckeModuleElement, SymTensorRepElt
 
 
 def to_sorted_fc_list(fc_dct):
-    dct = {k: v for k, v in fc_dct.iteritems() if v != 0}
+    dct = {k: v for k, v in iter(fc_dct.items()) if v != 0}
     keys = dct.keys()
     keys_sorted = sorted(
         keys, key=lambda x: (max(x[0], x[2]), x[0], x[2], abs(x[1]), x[1])
@@ -114,7 +114,7 @@ class FormalQexp(CommRingLikeElment):
         return self.fc_dct[idx]
 
     def iteritems(self):
-        return self.fc_dct.iteritems()
+        return iter(self.fc_dct.items())
 
     def sorted_list(self):
         return to_sorted_fc_list(self.fc_dct)
@@ -306,14 +306,14 @@ class QexpLevel1(FormalQexp):
 
     def theta_operator4(self):
         dic = dict()
-        for k, v in self.fc_dct.iteritems():
+        for k, v in iter(self.fc_dct.items()):
             (n, r, m) = k
             dic[k] = (4 * n * m - r**2) * v
         return QexpLevel1(dic, self.prec, self.base_ring)
 
     def phi_operator(self):
         d = {n: self[(n, 0, 0)] for n in self.prec._phi_operator_prec()}
-        return {n: v for n, v in d.iteritems() if v != 0}
+        return {n: v for n, v in iter(d.items()) if v != 0}
 
     def gcd_of_coefficients(self):
         K = self.base_ring
@@ -355,7 +355,7 @@ class QexpLevel1(FormalQexp):
         """
         fcmap = {
             (n, r, m): n**a * r**b * m**c * v
-            for (n, r, m), v in self.fc_dct.iteritems()
+            for (n, r, m), v in iter(self.fc_dct.items())
         }
         res = QexpLevel1(
             fcmap, self.prec, base_ring=self.base_ring, is_cuspidal=self._is_cuspidal
@@ -383,17 +383,17 @@ class QexpLevel1(FormalQexp):
         pl = (r1 * u1**2 + r2 * u1 * u2 + r3 * u2**2) ** (j // 2)
         pldct = pl.dict()
         formsdict = {}
-        for (_, i), ply in pldct.iteritems():
+        for (_, i), ply in iter(pldct.items()):
             formsdict[i] = sum(
                 [
                     v * self._differential_operator_monomial(a, b, c)
-                    for (a, b, c), v in ply.dict().iteritems()
+                    for (a, b, c), v in iter(ply.dict().items())
                 ]
             )
         forms = [
             x
             for _, x in sorted(
-                [(i, v) for i, v in formsdict.iteritems()], key=lambda x: x[0]
+                [(i, v) for i, v in iter(formsdict.items())], key=lambda x: x[0]
             )
         ]
         return SymWtGenElt(forms, self.prec, self.base_ring)
@@ -407,13 +407,13 @@ class QexpLevel1(FormalQexp):
         if R is None:
             R = hom.codomain()
         fc_map = {}
-        for k, v in self.fc_dct.iteritems():
+        for k, v in iter(self.fc_dct.items()):
             fc_map[k] = hom(v)
         return QexpLevel1(fc_map, self.prec, base_ring=R, is_cuspidal=self._is_cuspidal)
 
     def mod_p_map(self, p):
         fcmap = {}
-        for k, v in self.fc_dct.iteritems():
+        for k, v in iter(self.fc_dct.items()):
             if v != 0:
                 fcmap[k] = modulo(v, p, self.base_ring)
         return fcmap
@@ -563,7 +563,7 @@ class QseriesTimesQminushalf(FormalQexp):
                 * (m - QQ(1) / QQ(2)) ** c
                 * v
             )
-            for (n, r, m), v in self.f_part.fc_dct.iteritems()
+            for (n, r, m), v in iter(self.f_part.fc_dct.items())
         }
         f = QexpLevel1(fcmap, self.prec, base_ring=self.base_ring)
         return QseriesTimesQminushalf(f)
@@ -637,11 +637,11 @@ class ModFormQexpLevel1(QexpLevel1, HeckeModuleElement):
         prec = PrecisionDeg2(prec)
         if given_reduced_tuples_only:
             if is_cuspidal or wt % 2 == 1:  # level 1 specific.
-                for rdf, col in prec.group_by_reduced_forms_with_sgn().iteritems():
+                for rdf, col in iter(prec.group_by_reduced_forms_with_sgn().items()):
                     for t, sgn in col:
                         fc_dct[t] = fc_dct[rdf] * sgn**wt
             else:
-                for rdf, col in prec.group_by_reduced_forms().iteritems():
+                for rdf, col in iter(prec.group_by_reduced_forms().items()):
                     for t in col:
                         fc_dct[t] = fc_dct[rdf]
         QexpLevel1.__init__(

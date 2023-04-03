@@ -103,7 +103,7 @@ class ScalarModFormConst(object):
         if isinstance(self.wts, list):
             return tuple(self.wts)
         else:
-            return frozenset((k, v) for k, v in self.wts.iteritems())
+            return frozenset((k, v) for k, v in iter(self.wts.items()))
 
     @property
     def _key(self):
@@ -131,7 +131,7 @@ class ScalarModFormConst(object):
         def _monm(ws):
             return mul(dct[k] for k in ws)
 
-        return sum(_monm(k) * v for k, v in coeffs_dct.iteritems())
+        return sum(_monm(k) * v for k, v in iter(coeffs_dct.items()))
 
     def _polynomial_expr(self):
         R = PolynomialRing(QQ, names="phi4, phi6, chi10, chi12, chi35, chi5")

@@ -721,7 +721,7 @@ class CuspFormsDegree2(AbstSpaceOfLevel1):
 
         def morph(a, b, f, m):
             G = (-1) ** m * f.subs({x: -x}) * f
-            alst = [[k // 2, v] for k, v in G.dict().iteritems()]
+            alst = [[k // 2, v] for k, v in iter(G.dict().items())]
             F = sum([v * x**k for k, v in alst])
             return a**m * F.subs({x: (x - b) / a})
 

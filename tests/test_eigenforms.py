@@ -55,7 +55,7 @@ def polynomial_to_form(f, prec):
     def monom(t):
         return reduce(operator.mul, [f**a for f, a in zip(gens, t)])
 
-    return sum([a * monom(t) for t, a in f.dict().iteritems()])
+    return sum([a * monom(t) for t, a in iter(f.dict().items())])
 
 
 x47_fc_dct = load_cache("x47_fc_dct.sobj")
@@ -176,7 +176,7 @@ class TestEigenforms(unittest.TestCase):
     def test_es4_eigenvalues(self):
         es4 = eisenstein_series_degree2(4, 25)
         d = {2: 45, 3: 280, 4: 1549, 5: 3276, 9: 69049, 25: 10256401}
-        for k, v in d.iteritems():
+        for k, v in iter(d.items()):
             self.assertTrue(es4.hecke_eigenvalue(k) == v)
 
     def test_cusp_sp_wt28_hecke_charpoly(self):
