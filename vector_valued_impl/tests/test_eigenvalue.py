@@ -1,4 +1,12 @@
-from sage.all import ComplexField, NumberField, PolynomialRing, CuspForms, QQ, fork, cartesian_product_iterator
+from sage.all import (
+    ComplexField,
+    NumberField,
+    PolynomialRing,
+    CuspForms,
+    QQ,
+    fork,
+    cartesian_product_iterator,
+)
 from sage.sets.cartesian_product import CartesianProduct
 import unittest
 from degree2.vector_valued_smfs import vector_valued_siegel_modular_forms as vvsmf

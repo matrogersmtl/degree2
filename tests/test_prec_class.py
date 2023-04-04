@@ -23,7 +23,9 @@ class TestPrecClass(unittest.TestCase):
     def test_group_by_reduced_forms_with_sgn(self):
         prec = 8
         bls = []
-        for t, ls in iter(PrecisionDeg2(prec).group_by_reduced_forms_with_sgn().items()):
+        for t, ls in iter(
+            PrecisionDeg2(prec).group_by_reduced_forms_with_sgn().items()
+        ):
             rdf_t, sgn_t = reduced_form_with_sign(t)
             for t1, sgn in ls:
                 _, sgn_t1 = reduced_form_with_sign(t1)
